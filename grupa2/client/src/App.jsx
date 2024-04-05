@@ -57,7 +57,7 @@ function App() {
         }
        
       </ul>
-      <AddUserForm/>
+      <AddUserForm updateuserlist = {fetchData}/>
     </>
   )
 }

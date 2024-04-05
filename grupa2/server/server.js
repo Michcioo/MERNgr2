@@ -31,6 +31,17 @@ app.get("/api/users" , async(req,res)=>{
     }
 })
 
+app.post("/api/users" , async(req,res)=>{
+    try{
+        const newuser = new User(req.body)
+        await newuser.save()
+        res.status(201).json(newuser)
+    }catch(err){
+        console.error(`Error : ${err.message}`)
+        res.status(400).json(err)
+    }
+})
+
 app.delete("/api/users/:id", async (req,res)=>{
     const userid = req.params.id
     try
@@ -44,10 +55,6 @@ app.delete("/api/users/:id", async (req,res)=>{
     }catch(err){
         res.status(500).json({message:err.message})
     }
-})
-
-app.post("/api/users" , async(req,res)=>{
-    
 })
 
 app.listen(PORT , ()=>{
