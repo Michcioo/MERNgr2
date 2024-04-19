@@ -1,18 +1,30 @@
 import { useState } from "react"
-
-const AddUserForm = ({updateuserlist})=>{
+import axios from "axios"
+const AddUserForm = ()=>{
     const [newUser , setnewUser] = useState({name:"" , email:"",age:0})
 
     async function submitHandler(e){
         e.preventDefault()
+
+        const formdata = new FormData()
+        formdata.append("name",newUser.name)
+        formdata.append("age",newUser.age)
+        formdata.append("email" , newUser.email)
+
+        console.log("FormData value")
+        for(let [key,values] of formdata.entries){
+            console.log(`${key}:${values}`)
+        }
+
         try{
 
-            const res = await fetch("http://localhost:8080/api/users" , 
-            {
-                method:"POST" , 
-                headers:{'Content-type':'application/json'} , 
-                body:JSON.stringify(newUser)
-            })
+            const response = await axios.post("http://localhost:8080/api/users",formdata)
+            // const res = await fetch("http://localhost:8080/api/users" , 
+            // {
+            //     method:"POST" , 
+            //     headers:{'Content-type':'application/json'} , 
+            //     body:JSON.stringify(newUser)
+            // })
             
             if(!res.ok){
                 throw new Error(`Netłork response was not ok ${res.status}`)
@@ -22,7 +34,7 @@ const AddUserForm = ({updateuserlist})=>{
             console.log(data)
 
             setnewUser({name:"",email:"" , age:0})
-            updateuserlist()
+            // updateuserlist()
 
         }catch(err){
             console.error(`Something łent wrong : ${err.message}`)
